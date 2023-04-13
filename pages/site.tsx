@@ -29,7 +29,16 @@ export default function Site() {
   const isDefined = <T extends unknown>(
     value: T | undefined
   ): value is Exclude<T, undefined> => value !== undefined
+  const [fileContent, setFileContent] = useState("");
 
+  const handleDownload = () => {
+    const element = document.createElement("a");
+    const file = new Blob([fileContent], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = "output.txt";
+    document.body.appendChild(element);
+    element.click();
+  }; 
   const handleSaveAllData = () => {
     const dataToBeSaved = images.map((image) => {
       if (image.is_edited) {
@@ -46,10 +55,14 @@ export default function Site() {
       }
     })
     const filteredData = dataToBeSaved.filter(isDefined)
-    console.log(filteredData, 3333)
     if (filteredData) {
       mutation.mutate(filteredData)
-      if (mutation.data?.success || mutation.error?.message) {
+      if (mutation.data?.data) {
+        setShowMessage(true)
+
+        setFileContent(JSON.stringify(mutation?.data?.data))
+      }
+      if(mutation.error?.message) {
         setShowMessage(true)
       }
     }
@@ -73,9 +86,9 @@ export default function Site() {
 
   return (
     <>
-      {mutation.data?.success && (
+      {mutation.data?.data && (
         <Message
-          message={mutation.data?.success}
+          message={'Success'}
           type={"success"}
           show={showMessage}
           setShow={setShowMessage}
@@ -98,13 +111,13 @@ export default function Site() {
           >
             Save all data via server
           </button>
-          <Link
+          <button
             className="rounded-md ml-2 bg-indigo-50  px-3.5 py-2.5 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100"
-            href="/output.json"
-            target="_blank"
+            onClick={handleDownload}
           >
+
             View output file
-          </Link>
+          </button>
         </div>
 
         <ul
