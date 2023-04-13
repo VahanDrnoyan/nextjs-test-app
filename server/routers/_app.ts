@@ -12,7 +12,7 @@ export const appRouter = router({
       }).array(),
     )
     .mutation(async ({ input }: any) => {
-      return {data:input};
+      return input;
 
     }),
 });

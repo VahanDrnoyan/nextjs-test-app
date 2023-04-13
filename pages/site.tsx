@@ -56,11 +56,12 @@ export default function Site() {
     })
     const filteredData = dataToBeSaved.filter(isDefined)
     if (filteredData) {
+        console.log(filteredData)
       mutation.mutate(filteredData)
-      if (mutation.data?.data) {
+      if (mutation.data) {
         setShowMessage(true)
 
-        setFileContent(JSON.stringify(mutation?.data?.data))
+        setFileContent(JSON.stringify(mutation?.data))
       }
       if(mutation.error?.message) {
         setShowMessage(true)
@@ -86,7 +87,7 @@ export default function Site() {
 
   return (
     <>
-      {mutation.data?.data && (
+      {mutation.data && (
         <Message
           message={'Success'}
           type={"success"}
