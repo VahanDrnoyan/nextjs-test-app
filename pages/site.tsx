@@ -105,6 +105,12 @@ export default function Site() {
       )}
 
       <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 my-20 text-center">
+        <h1 className="text-2xl text-left mb-4">Please read the note:</h1>
+      <div className="text-left mb-8">Hello, <br /><br /> Thank you for reviewing my app.<br />
+      1. This implementation requires to ask permission from this page https://cors-anywhere.herokuapp.com/ which is a simple proxy server for appropriate CORS implementation  to make unsplash images editable and exportable from canvas. Just one click on a button.
+      <br />2. Edited images are not saved to remote server, nor on own filsystem. Instead the local path on client computer is saved along edited text.
+        </div>
+
         <div className="flex justify-end mb-3">
           <button
             onClick={handleSaveAllData}
