@@ -42,7 +42,6 @@ export default function Site() {
   const handleSaveAllData = () => {
     const dataToBeSaved = images.map((image) => {
       if (image.is_edited) {
-        console
         let shortenedUrl = ""
         if (image.new_url) {
           shortenedUrl = image.new_url
@@ -55,19 +54,21 @@ export default function Site() {
       }
     })
     const filteredData = dataToBeSaved.filter(isDefined)
-    if (filteredData) {
-        console.log(filteredData)
+    console.log(filteredData.length)
+    if (filteredData.length > 0) {
       mutation.mutate(filteredData)
-      if (mutation.data) {
-        setShowMessage(true)
-
-        setFileContent(JSON.stringify(mutation?.data))
-      }
-      if(mutation.error?.message) {
-        setShowMessage(true)
-      }
     }
   }
+  useEffect(()=>{
+    if (mutation.data) {
+      setShowMessage(true)
+      setFileContent(JSON.stringify(mutation?.data))
+    }
+    if(mutation.error?.message) {
+      setShowMessage(true)
+    }
+
+  },[mutation.data, mutation.error?.message ])
   //state to trigger rerender for edited images to be shown instantly
   const [rerender, setRerender] = useState(false)
   useEffect(() => {
